@@ -62,7 +62,7 @@ A simple and intuitive Todo application built with React Native and Expo. The ap
    npm install
 
 4. **Firestore Database Rules**
-   Cloud firestore rules needed for the app to work properly:
+Cloud firestore rules needed for the app to work properly:
    ```
       rules_version = '2';
       service cloud.firestore {
