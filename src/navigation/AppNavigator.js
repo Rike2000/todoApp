@@ -18,8 +18,8 @@ const AppNavigator = () => {
       {user ? (
         <>
             <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="TodoListScreen" component={TodoListScreen} />
-            <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+            <Stack.Screen name="Lists" component={TodoListScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
         </>
         ) : (
         <Stack.Screen name="Login" component={LoginScreen} />

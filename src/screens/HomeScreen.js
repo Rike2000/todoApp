@@ -28,7 +28,7 @@ const HomeScreen = () => {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("SettingsScreen")}
+                    onPress={() => navigation.navigate("Settings")}
                     style={{marginRight: 15}}
                 >
                     <SettingsIcon name="settings" size={24} color={"black"}/>
@@ -54,8 +54,20 @@ const HomeScreen = () => {
     };
 
     const handleDeleteList = async (listId) => {
-        await deleteTodoList(listId);
-        setLists(prevLists => prevLists.filter(list => list.id !== listId));
+        Alert.alert(
+            "Delete List",
+            "Are you sure you want to delete this list?",
+            [
+                { text: "Cancel", style: "cancel" },
+                { 
+                    text: "Yes", 
+                    onPress: async () => {
+                        await deleteTodoList(listId);
+                        setLists(prevLists => prevLists.filter(list => list.id !== listId));
+                    }
+                }
+            ]
+        );
     };
 
     const handleLogout = () => {
@@ -115,7 +127,7 @@ const HomeScreen = () => {
                 renderItem={({ item }) => (
                     <View style={{ flexDirection: "row", alignItems: "center", padding: 15, backgroundColor: "#f8f9fa", marginVertical: 5, borderRadius: 8 }}>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate("TodoListScreen", { listId: item.id, listName: item.name })}
+                            onPress={() => navigation.navigate("Lists", { listId: item.id, listName: item.name })}
                             style={{ flex: 1 }}
                             hitSlop={{ top: 30, bottom: 30 }}
                         >

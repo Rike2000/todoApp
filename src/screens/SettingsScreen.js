@@ -42,7 +42,6 @@ const SettingsScreen = () => {
 
     return (
         <View style={{ flex: 1, padding: 20, backgroundColor: '#ffffff' }}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 20 }}>Settings</Text>
 
             <Text style={{ fontSize: 18, marginBottom: 10 }}>Choose Your Color:</Text>
             <ColorPicker style={{width: "100%"}} value={color || "#ffffff"} onChange={handleColorChange}>
