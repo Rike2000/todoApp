@@ -56,20 +56,50 @@ A simple and intuitive Todo application built with React Native and Expo. The ap
     export { auth, db };
     ```
 
-  3. **Install dependencies**
+3. **Install dependencies**
 
-     ```bash
-     npm install
+   ```bash
+   npm install
 
-  ## Usage
+4. **Firebase Rules**
+   Cloud firestore rules needed for the app to work properly:
+   ```
+      rules_version = '2';
+      service cloud.firestore {
+      match /databases/{database}/documents {
+    
+      // Users Collection: Allow users to read others' emails (to invite)
+      match /users/{userId} {
+         allow read: if request.auth != null;  // Allow any logged-in user to read user data
+         allow update, delete: if request.auth.uid == userId;  // Only users can edit their own profile
+         allow create: if request.auth.uid == userId;
+      }
 
-  1. **Start the development server**
-     ```bash
-     npm start
+      // todoLists Collection: Users in "userIds" can modify/delete the list
+      match /todoLists/{listId} {
+         allow read, update, delete: if resource.data.userIds != null && request.auth.uid in resource.data.userIds;
+         allow create: if request.auth.uid != null;
+      }
 
-  2. **Open the app**
+      // tasks Collection: Users can modify tasks if they have access to the parent list
+      match /tasks/{taskId} {
+         allow read, update, delete: if request.auth != null;
+         allow create: if request.auth != null;
+      }
+   }
+   }
+   ```
+ 
+
+## Usage
+
+1. **Start the development server**
+   ```bash
+   npm start
+
+2. **Open the app**
      
-     -  For web: Open http://localhost:8081 in your browser.
-     -  For mobile:
-         Install the Expo Go app on your device.
-         Scan the QR code displayed in the terminal or browser after starting the development server.
+   -  For web: Open http://localhost:8081 in your browser.
+   -  For mobile:
+      - Install the Expo Go app on your device.
+      - Scan the QR code displayed in the terminal or browser after starting the development server.
