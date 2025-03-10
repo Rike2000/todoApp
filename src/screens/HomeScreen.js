@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, FlatList, TouchableOpacity, TextInput, RefreshControl, Alert } from "react-native";
+import { View, Text, FlatList, TouchableOpacity, TextInput, RefreshControl, Alert, Platform } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { getTodoLists, createTodoList, deleteTodoList } from "../services/todoService";
 import AuthContext from "../context/AuthContext"; 
@@ -54,30 +54,46 @@ const HomeScreen = () => {
     };
 
     const handleDeleteList = async (listId) => {
-        Alert.alert(
-            "Delete List",
-            "Are you sure you want to delete this list?",
-            [
-                { text: "Cancel", style: "cancel" },
-                { 
-                    text: "Yes", 
-                    onPress: async () => {
-                        await deleteTodoList(listId);
-                        setLists(prevLists => prevLists.filter(list => list.id !== listId));
+
+        if (Platform.OS === "web") {
+            if (window.confirm("Are you sure you want to delete this list?")) {
+                await deleteTodoList(listId);
+                setLists(prevLists => prevLists.filter(list => list.id !== listId));
+            }
+            
+        } else (
+            Alert.alert(
+                "Delete List",
+                "Are you sure you want to delete this list?",
+                [
+                    { text: "Cancel", style: "cancel" },
+                    { 
+                        text: "Yes", 
+                        onPress: async () => {
+                            await deleteTodoList(listId);
+                            setLists(prevLists => prevLists.filter(list => list.id !== listId));
+                        }
                     }
-                }
-            ]
-        );
+                ]
+            )
+        )
     };
 
     const handleLogout = () => {
-        Alert.alert("Logout?", "Do you want to logout?", [
-            {
-                text: "Cancel",
-                style: "cancel"
-            },
-            {text: "Logout", onPress: () => logout()}
-        ])
+
+        if (Platform.OS === "web") {
+            if (window.confirm("Do you want to logout?")) {
+                logout()
+            }
+        }else (
+            Alert.alert("Logout?", "Do you want to logout?", [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                {text: "Logout", onPress: () => logout()}
+            ])
+        )
     }
 
     const formatDate = (createdAt) => {

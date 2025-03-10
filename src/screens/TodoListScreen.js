@@ -9,6 +9,7 @@ import {
   Modal,
   Button,
   RefreshControl,
+  Platform
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import {
@@ -80,13 +81,25 @@ const TodoListScreen = () => {
       const result = await inviteUserToList(listId, email);
 
       if (result === true) {
-        Alert.alert("Success", `User ${email} invited!`);
+        if (Platform.OS === "web") {
+          window.alert(`User ${email} invited!`)
+        } else (
+          Alert.alert("Success", `User ${email} invited!`)
+        )
         setEmail("");
         setModalVisible(false);
       } else if (result === "User already in the list") {
-        Alert.alert("Error", "User is already in the list.");
+        if (Platform.OS === "web") {
+          window.alert("User is already in the list.")
+        } else (
+          Alert.alert("Error", "User is already in the list.")
+        )
       } else {
-        Alert.alert("Error", "User not found.");
+        if (Platform.OS === "web") {
+          window.alert("User not found.")
+        } else (
+          Alert.alert("Error", "User not found.")
+        )
       }
     } catch (error) {
       Alert.alert("Error", error.message);

@@ -170,10 +170,8 @@ export const deleteTodoList = async (listId) => {
       });
       batch.delete(listRef);
       await batch.commit();
-      console.log("List and tasks deleted.");
     } else {
       await updateDoc(listRef, { userIds: updatedUserIds });
-      console.log("User removed from list.");
     }
   } catch (error) {
     console.error("Error deleting list:", error);
